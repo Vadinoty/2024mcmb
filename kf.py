@@ -18,9 +18,9 @@ class kalman_filter:
 
     def __init__(self, initState, P_array, Q_array, R_array):
         self.Xe = initState
-        self.Pe = P_array.diagonal
-        self.Q = Q_array.diagonal
-        self.R = R_array.diagonal
+        self.Pe = np.diag(P_array)
+        self.Q = np.diag(Q_array)
+        self.R = np.diag(R_array)
         self.F = numpy.matlib.eye(n=9, M=9)
         self.H = numpy.matlib.mat([[0, 0, 0, 0, 0, 0, 1, 0, 0],
                               [0, 0, 0, 0, 0, 0, 0, 1, 0],
@@ -40,6 +40,9 @@ class kalman_filter:
         self.Pp = self.F * self.Pe * self.F.T + self.Q
 
     def Update(self, Obs):
-        self.K = self.Pp * self.H.T / (self.H * self.Pp * self.H.T + self.R.T)
-        self.Xp = self.Xe + self.K * (Obs - self.H * self.Xe)
+        self.K = self.Pp * self.H.T * np.linalg.inv(self.H * self.Pp * self.H.T + self.R.T)
+        self.Xe = self.Xp + self.K * (Obs - self.H * self.Xp)
         self.Pe = (numpy.matlib.eye(n=9, M=9) - self.K * self.H) * self.Pe
+
+    def PrintOut(self):
+        print(self.Xe)
