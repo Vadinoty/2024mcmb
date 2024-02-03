@@ -44,5 +44,5 @@ class kalman_filter:
         self.Xe = self.Xp + self.K * (Obs - self.H * self.Xp)
         self.Pe = (numpy.matlib.eye(n=9, M=9) - self.K * self.H) * self.Pe
 
-    def PrintOut(self):
-        print(self.Xe)
+    def getState(self):
+        return self.Xe
