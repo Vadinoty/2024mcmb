@@ -42,7 +42,9 @@ class kalman_filter:
         self.Pp = self.F * self.Pe * self.F.T + self.Q
 
     def Update(self, Obs):
-        self.K = self.Pp * self.H.T * np.linalg.inv(self.H * self.Pp * self.H.T + self.R.T)
+        self.K = self.Pp * self.H.T * np.linalg.inv(self.H * self.Pp * self.H.T + self.R)
+        print(self.K)
+
         self.Xe = self.Xp + self.K * (Obs - self.H * self.Xp)
         self.Pe = (numpy.matlib.eye(n=9, M=9) - self.K * self.H) * self.Pe
     
@@ -51,7 +53,6 @@ class kalman_filter:
         self.d = 1 / self.t
         epsilon = Obs - self.H * self.Xp
         self.R = (1 - self.d) * self.R + self.d * (epsilon * epsilon.T - self.H * self.Pp * self.H.T ) # sage Husa update
-        print(self.R)
         self.K = self.Pp * self.H.T * np.linalg.inv(self.H * self.Pp * self.H.T + self.R.T)
         self.Xe = self.Xp + self.K * epsilon
         self.Pe = (numpy.matlib.eye(n=9, M=9) - self.K * self.H) * self.Pe
