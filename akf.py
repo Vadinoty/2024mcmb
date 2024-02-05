@@ -43,8 +43,6 @@ class kalman_filter:
 
     def Update(self, Obs):
         self.K = self.Pp * self.H.T * np.linalg.inv(self.H * self.Pp * self.H.T + self.R)
-        print(self.K)
-
         self.Xe = self.Xp + self.K * (Obs - self.H * self.Xp)
         self.Pe = (numpy.matlib.eye(n=9, M=9) - self.K * self.H) * self.Pe
     
@@ -63,3 +61,9 @@ class kalman_filter:
     def printRQ(self):
         print(self.R)
         print(self.Q)
+
+    def setState(self, State):
+        self.x = State
+    
+    def setP(self, P_array):
+        self.Pe = np.diag(P_array)
