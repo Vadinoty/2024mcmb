@@ -2,11 +2,17 @@ import akf
 import math
 import random
 import numpy as np
+from scipy.optimize import curve_fit 
 import numpy.matlib
 import matplotlib.pyplot as plt
 
+def sigmoid(x, a, b, c):
+    return c / (1 + np.exp(-a*(x-b)))
+
 fail = 0
 total = 1000
+
+list_i = []
 
 for iter in range (0, total):
     State = numpy.matlib.mat([0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=np.float64).reshape(9, 1)
@@ -121,9 +127,50 @@ for iter in range (0, total):
             break 
         # print(i)
 
-    print("["+repr(iter)+"/"+repr(total)+"]: i = "+repr(i))
+    print("["+repr(iter)+"/"+repr(total)+"]: i = "+repr(i)+" s = "+repr(int(i/100)))
+    if i <= 100000: list_i.append(float(i)/100 - 165)
+
+list_i.sort()
+list_t = []
+len = len(list_i)
+
+for i in range(1, len + 1):
+    list_t.append(float(i)/(len)) 
+
+arr_i = np.array(list_i, dtype=np.float64)
+arr_t = np.array(list_t, dtype=np.float64)
+
+print(arr_i)
+print(arr_t)
+
+popt, pcov = curve_fit(sigmoid, arr_i, arr_t)
+print(popt)
+print(pcov)
+
+x_fit = np.linspace(-5, 5, 200)
+y_fit = sigmoid(x_fit, *popt)
+
+plt.scatter(arr_i, arr_t, label='data')
+plt.plot(x_fit, y_fit, label='fit', color='r')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+plt.show()
+
+# # 绘制直方图
+# plt.hist(list_i, bins=30, color='skyblue', range=(160, 170))
+
+# # 设置图表属性
+# plt.title('RUNOOB hist() Test')
+# plt.xlabel('Value')
+# plt.ylabel('Frequency')
+
+# # 显示图表
+# plt.show()
+
 winrate = 1 - fail/total
 print(winrate)
+
 
 
 # plt.plot(listx1, listy1)
