@@ -82,7 +82,7 @@ for iter in range (0, total):
         # listy1e.append(cur_state[1, 0])
 
     # After move
-    NewState = numpy.matlib.mat([x1, y1, 0, vx1, vx2, 0, 0, 0, 0], dtype=np.float64).reshape(9, 1)
+    NewState = numpy.matlib.mat([x1, y1, 0, vx1, vy1, 0, 0, 0, 0], dtype=np.float64).reshape(9, 1)
     kf_sub.setState(NewState)
     kf_sub.setP(P_arr)
 

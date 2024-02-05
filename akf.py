@@ -63,7 +63,7 @@ class kalman_filter:
         print(self.Q)
 
     def setState(self, State):
-        self.x = State
+        self.Xe = State
     
     def setP(self, P_array):
         self.Pe = np.diag(P_array)
