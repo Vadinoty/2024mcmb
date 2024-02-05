@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 # model: search boat
 # x = x + vxdt
 # y = y + vydt
-# vx = vx * randomD(D is 0.8 to 1.2)
+# vx = vx +- 0.5
 # vy = 0 + randomy
 # suppose that flows has no effect on search boat
 
